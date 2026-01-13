@@ -8,15 +8,14 @@ import {
 import { ADDRESSTYPES } from "./constant/enums";
 import { onChangeAddress } from "./helper/find-address";
 
-const AddressForm = ({ form = null, onFinish = null }) => {
-  const [localForm] = Form.useForm();
-  const addressForm = form ?? localForm;
+const AddressForm = ({ form }) => {
+  const selectedRegion = Form.useWatch("region", form);
+  const selectedProvince = Form.useWatch("province", form);
+  const selectedCity = Form.useWatch("city", form);
 
-  const selectedRegion = Form.useWatch("region", addressForm);
-  const selectedProvince = Form.useWatch("province", addressForm);
-  const selectedCity = Form.useWatch("city", addressForm);
-
-  const isStandaloneForm = !form;
+  if (!form) {
+    return <div className="text-red-500">No form found for address</div>;
+  }
 
   const baseSelectProps = {
     allowClear: true,
@@ -24,34 +23,21 @@ const AddressForm = ({ form = null, onFinish = null }) => {
     size: "large",
     filterOption: (input, option) =>
       (option?.label?.toUpperCase() ?? "").includes(input?.toUpperCase()),
-    dropdownStyle: { width: "30%" },
   };
 
   const filteredProvinces = refprovinceList.filter(
-    (province) => province.regCode == selectedRegion
+    (province) => province.regCode === selectedRegion
   );
 
   const filteredCities = refcitymunList.filter(
-    (city) => city.provCode == selectedProvince
+    (city) => city.provCode === selectedProvince
   );
 
   const filteredBarangays = refbrgyList.filter(
-    (barangay) => barangay.citymunCode == selectedCity
+    (barangay) => barangay.citymunCode === selectedCity
   );
 
-  const handleRegionChange = () => {
-    onChangeAddress(addressForm, ADDRESSTYPES.REGION);
-  };
-
-  const handleProvinceChange = () => {
-    onChangeAddress(addressForm, ADDRESSTYPES.PROVINCE);
-  };
-
-  const handleCityChange = () => {
-    onChangeAddress(addressForm, ADDRESSTYPES.CITY);
-  };
-
-  const formFields = (
+  return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       <Form.Item
         name="region"
@@ -62,7 +48,7 @@ const AddressForm = ({ form = null, onFinish = null }) => {
           {...baseSelectProps}
           placeholder="Select a region"
           options={refregionList}
-          onChange={handleRegionChange}
+          onChange={() => onChangeAddress(form, ADDRESSTYPES.REGION)}
         />
       </Form.Item>
 
@@ -75,7 +61,7 @@ const AddressForm = ({ form = null, onFinish = null }) => {
           {...baseSelectProps}
           placeholder="Select a province"
           options={filteredProvinces}
-          onChange={handleProvinceChange}
+          onChange={() => onChangeAddress(form, ADDRESSTYPES.PROVINCE)}
         />
       </Form.Item>
 
@@ -88,7 +74,7 @@ const AddressForm = ({ form = null, onFinish = null }) => {
           {...baseSelectProps}
           placeholder="Select a city"
           options={filteredCities}
-          onChange={handleCityChange}
+          onChange={() => onChangeAddress(form, ADDRESSTYPES.CITY)}
         />
       </Form.Item>
 
@@ -104,19 +90,6 @@ const AddressForm = ({ form = null, onFinish = null }) => {
         />
       </Form.Item>
     </div>
-  );
-
-  return isStandaloneForm ? (
-    <Form
-      form={addressForm}
-      onFinish={onFinish}
-      layout="vertical"
-      className="flex flex-col gap-4"
-    >
-      {formFields}
-    </Form>
-  ) : (
-    formFields
   );
 };
 
