@@ -1,5 +1,6 @@
 import React from "react";
 import { DatePicker as AntDatePicker, TimePicker as AntTimePicker } from "antd";
+import dayjs from "dayjs";
 
 const createPicker = (Component, defaultProps = {}) =>
   React.memo(({ className, style, ...props }) => (
@@ -11,22 +12,38 @@ const createPicker = (Component, defaultProps = {}) =>
     />
   ));
 
+const eighteenYearsAgo = dayjs().subtract(18, "year").endOf("day");
+
 const DatePicker = {
   Date: createPicker(AntDatePicker, { format: "MM-DD-YYYY" }),
+
   DateTime: createPicker(AntDatePicker, {
     format: "MM-DD-YYYY HH:mm",
     showTime: true,
   }),
+
+  /** ✅ 18 years old and above only */
+  LegalAge: createPicker(AntDatePicker, {
+    format: "MM-DD-YYYY",
+    disabledDate: (current) => current && current.isAfter(eighteenYearsAgo),
+  }),
+
   Month: createPicker(AntDatePicker, { picker: "month" }),
   Year: createPicker(AntDatePicker, { picker: "year" }),
   Week: createPicker(AntDatePicker, { picker: "week" }),
-  Range: createPicker(AntDatePicker.RangePicker, { format: "MM-DD-YYYY" }),
+
+  Range: createPicker(AntDatePicker.RangePicker, {
+    format: "MM-DD-YYYY",
+  }),
+
   DateTimeRange: createPicker(AntDatePicker.RangePicker, {
     format: "MM-DD-YYYY HH:mm",
     showTime: true,
   }),
+
   MonthRange: createPicker(AntDatePicker.RangePicker, { picker: "month" }),
   YearRange: createPicker(AntDatePicker.RangePicker, { picker: "year" }),
+
   Time: createPicker(AntTimePicker),
 };
 

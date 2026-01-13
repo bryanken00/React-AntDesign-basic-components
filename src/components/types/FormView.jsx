@@ -9,8 +9,9 @@ import {
   FormOutlined,
   PictureOutlined,
 } from "@ant-design/icons";
-import DatePicker from "../form/date/DatePicker";
 import { Calendar } from "lucide-react";
+import DatePicker from "../form/date/DatePicker";
+import AddressForm from "../form/address/AddressForm";
 
 const FormView = () => {
   const [form] = Form.useForm();
@@ -47,9 +48,10 @@ const FormView = () => {
 
         <SectionCard title="Dates" icon={<Calendar />}>
           <Form.Item name="date" label="Text Area">
-            <DatePicker.DateTime className="w-full" />
+            <DatePicker.LegalAge className="w-full" />
           </Form.Item>
         </SectionCard>
+        <AddressForm />
       </Form>
 
       <Button type="primary" onClick={() => form.submit()}>
