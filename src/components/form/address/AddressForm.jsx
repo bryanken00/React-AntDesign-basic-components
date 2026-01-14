@@ -7,6 +7,7 @@ import {
 } from "./constant/dropdowns";
 import { ADDRESSTYPES } from "./constant/enums";
 import { onChangeAddress } from "./helper/find-address";
+import { combineRules, validationRules } from "../../../helper/form-validation";
 
 const AddressForm = ({ form }) => {
   const selectedRegion = Form.useWatch("region", form);
@@ -42,7 +43,7 @@ const AddressForm = ({ form }) => {
       <Form.Item
         name="region"
         label="Region"
-        rules={[{ required: true, message: "Please select region" }]}
+        rules={combineRules(validationRules.required("Please select region"))}
       >
         <Select
           {...baseSelectProps}
@@ -55,7 +56,7 @@ const AddressForm = ({ form }) => {
       <Form.Item
         name="province"
         label="Province"
-        rules={[{ required: true, message: "Please select province" }]}
+        rules={combineRules(validationRules.required("Please select province"))}
       >
         <Select
           {...baseSelectProps}
@@ -68,7 +69,7 @@ const AddressForm = ({ form }) => {
       <Form.Item
         name="city"
         label="City/Municipality"
-        rules={[{ required: true, message: "Please select city" }]}
+        rules={combineRules(validationRules.required("Please select city"))}
       >
         <Select
           {...baseSelectProps}
@@ -81,7 +82,7 @@ const AddressForm = ({ form }) => {
       <Form.Item
         name="brgy"
         label="Barangay"
-        rules={[{ required: true, message: "Please select barangay" }]}
+        rules={combineRules(validationRules.required("Please select barangay"))}
       >
         <Select
           {...baseSelectProps}

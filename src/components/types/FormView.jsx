@@ -10,8 +10,8 @@ import {
   PictureOutlined,
 } from "@ant-design/icons";
 import { Calendar } from "lucide-react";
-import DatePicker from "../form/date/DatePicker";
 import AddressForm from "../form/address/AddressForm";
+import DatePicker from "../form/date/DatePicker";
 
 const FormView = () => {
   const [form] = Form.useForm();
