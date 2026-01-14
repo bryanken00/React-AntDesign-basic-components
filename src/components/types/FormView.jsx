@@ -47,11 +47,11 @@ const FormView = () => {
         </SectionCard>
 
         <SectionCard title="Dates" icon={<Calendar />}>
-          <Form.Item name="date" label="Text Area">
+          <Form.Item name="birthdate" label="Legal Age">
             <DatePicker.LegalAge className="w-full" />
           </Form.Item>
         </SectionCard>
-        <AddressForm />
+        <AddressForm form={AddressForm} />
       </Form>
 
       <Button type="primary" onClick={() => form.submit()}>
